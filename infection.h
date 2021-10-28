@@ -356,18 +356,12 @@ namespace INFECTION
 			{
 				if (!moves(state, 1).empty())
 				{
-					cout << endl << "your turn" << endl;
+					cout << "your turn" << endl;
 					playerMove();
 					print();
 				}
 				if (!moves(state, 2).empty())
 				{
-					if (cointPoints(2) == 1)
-					{
-						makeBestMove(2, maxDepth);
-						cout << "opponent move" << endl;
-						print();
-					}
 					cout << "opponent move" << endl;
 					makeBestMove(2, maxDepth);
 					print();
@@ -381,6 +375,52 @@ namespace INFECTION
 				break;
 			case 2:
 				cout << "Sorry, you lost(((" << endl;
+				break;
+			case 0:
+				cout << "Not bad. Draw!" << endl;
+				break;
+			}
+		}
+
+		void botBattle(int turn)
+		{
+			firstMove = turn;
+
+			print();
+
+			if (firstMove != curPlayer)
+			{
+				if (!moves(state, 2).empty())
+				{
+					cout << "player 2 move" << endl;
+					makeBestMove(curPlayer == 1 ? 2 : 1, maxDepth);
+					print();
+				}
+			}
+
+			while (!isGameOver())
+			{
+				if (!moves(state, 1).empty())
+				{
+					cout << "player  move" << endl;
+					makeBestMove(curPlayer, 4);
+					print();
+				}
+				if (!moves(state, 2).empty())
+				{
+					cout << "player 2 move" << endl;
+					makeBestMove(2, maxDepth);
+					print();
+				}
+			}
+
+			switch (winner)
+			{
+			case 1:
+				cout << "Player 1 won" << endl;
+				break;
+			case 2:
+				cout << "Player 2 won" << endl;
 				break;
 			case 0:
 				cout << "Not bad. Draw!" << endl;

@@ -15,9 +15,8 @@ string  toLowerCase(string str)
 	return str;
 }
 
-int main()
+void initGame(int state[6][6])
 {
-	int state[6][6];
 	for (int i = 0; i < 6; i++)
 		for (int j = 0; j < 6; j++)
 			state[i][j] = 0;
@@ -25,9 +24,16 @@ int main()
 	state[5][5] = 1;
 	state[5][0] = 2;
 	state[0][5] = 2;
+}
 
+int main(string args[])
+{
+	int state[6][6];
+
+	initGame(state);
 
 	infection game(state);
-	game.startGame(1, 1);
+	//game.startGame(1, 1);
 
+	game.botBattle(1);
 }
