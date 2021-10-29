@@ -26,14 +26,17 @@ void initGame(int state[6][6])
 	state[0][5] = 2;
 }
 
-int main(string args[])
+int main(int argc, char* argv[])
 {
 	int state[6][6];
 
 	initGame(state);
 
 	infection game(state);
-	//game.startGame(1, 1);
+	game.startGame(1, 2);
 
-	game.botBattle(1);
+	//game.botBattle(argv[argc - 1][0] - '0' + 1);
+	//game.botBattle();
+	game.botBattle(2, 4);
+
 }

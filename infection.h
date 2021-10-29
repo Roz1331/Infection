@@ -15,6 +15,8 @@ namespace INFECTION
 		int curPlayer;
 		int firstMove;
 		int maxDepth = 4;
+		string bestFrom;
+		string bestTo;
 
 		infection(int st[6][6], int pl = 1, int fm = 1)
 		{
@@ -40,6 +42,7 @@ namespace INFECTION
 
 		vector<board> moves(board st, int player)
 		{
+			bestFrom = "";
 			vector<board> result;
 			for (int i = 0; i < 6; i++)
 			{
@@ -56,6 +59,18 @@ namespace INFECTION
 								{
 									if (abs(i - ii) <= 1 && abs(j - jj) <= 1) // обрабатываем первый слой
 									{
+										char charFrom = j + 'a';
+										char intFrom = i + '0' + 1;
+
+										bestFrom += charFrom;
+										bestFrom += intFrom;
+
+										char charTo = jj + 'a';
+										char intTo = ii + '0' + 1;
+
+										bestTo += charTo;
+										bestTo += intTo;
+
 										int tmp[6][6];
 										initArray(st.state, tmp);
 
@@ -382,7 +397,7 @@ namespace INFECTION
 			}
 		}
 
-		void botBattle(int turn)
+		void botBattle(int depth1 = 4, int depth2 = 4, int turn = 1)
 		{
 			firstMove = turn;
 
@@ -393,7 +408,7 @@ namespace INFECTION
 				if (!moves(state, 2).empty())
 				{
 					cout << "player 2 move" << endl;
-					makeBestMove(curPlayer == 1 ? 2 : 1, maxDepth);
+					makeBestMove(curPlayer == 1 ? 2 : 1, depth1);
 					print();
 				}
 			}
@@ -402,14 +417,14 @@ namespace INFECTION
 			{
 				if (!moves(state, 1).empty())
 				{
-					cout << "player  move" << endl;
-					makeBestMove(curPlayer, 4);
+					cout << "player 1 move" << endl;
+					makeBestMove(curPlayer, depth1);
 					print();
 				}
 				if (!moves(state, 2).empty())
 				{
 					cout << "player 2 move" << endl;
-					makeBestMove(2, maxDepth);
+					makeBestMove(2, depth2);
 					print();
 				}
 			}

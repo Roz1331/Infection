@@ -8,6 +8,8 @@ namespace BOARD
 	{
 		int state[6][6];
 		int heur;
+		string posFrom;
+		string posTo;
 
 		board(int st[6][6])
 		{
