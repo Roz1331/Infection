@@ -42,7 +42,7 @@ namespace INFECTION
 
 		vector<board> moves(board st, int player)
 		{
-			bestFrom = "";
+
 			vector<board> result;
 			for (int i = 0; i < 6; i++)
 			{
@@ -55,21 +55,24 @@ namespace INFECTION
 						{
 							for (int jj = 0; jj < 6; jj++)
 							{
+								bestFrom = "";
+								bestTo = "";
 								if (st.state[ii][jj] == 0)
 								{
+									char charFrom = j + 'a';
+									char intFrom = i + '0' + 1;
+
+									bestFrom += charFrom;
+									bestFrom += intFrom;
+
+									char charTo = jj + 'a';
+									char intTo = ii + '0' + 1;
+
+									bestTo += charTo;
+									bestTo += intTo;
+
 									if (abs(i - ii) <= 1 && abs(j - jj) <= 1) // обрабатываем первый слой
 									{
-										char charFrom = j + 'a';
-										char intFrom = i + '0' + 1;
-
-										bestFrom += charFrom;
-										bestFrom += intFrom;
-
-										char charTo = jj + 'a';
-										char intTo = ii + '0' + 1;
-
-										bestTo += charTo;
-										bestTo += intTo;
 
 										int tmp[6][6];
 										initArray(st.state, tmp);
@@ -78,7 +81,10 @@ namespace INFECTION
 
 										// "заражаем" €чейки противника
 										infectOpponent(tmp, ii, jj, player);
-										result.push_back(board(tmp));
+										board brd = board(tmp);
+										brd.posFrom = bestFrom;
+										brd.posTo = bestTo;
+										result.push_back(brd);
 									}
 									else if (abs(i - ii) <= 2 && abs(j - jj) <= 2) //обрабатываем второй слой
 									{
@@ -90,7 +96,10 @@ namespace INFECTION
 
 										// "заражаем" €чейки противника
 										infectOpponent(tmp, ii, jj, player);
-										result.push_back(board(tmp));
+										board brd = board(tmp);
+										brd.posFrom = bestFrom;
+										brd.posTo = bestTo;
+										result.push_back(brd);
 									}
 								}
 							}
@@ -407,8 +416,8 @@ namespace INFECTION
 			{
 				if (!moves(state, 2).empty())
 				{
-					cout << "player 2 move" << endl;
 					makeBestMove(curPlayer == 1 ? 2 : 1, depth1);
+					cout << "player 2 move " << state.posFrom << " " << state.posTo << endl;
 					print();
 				}
 			}
@@ -417,14 +426,16 @@ namespace INFECTION
 			{
 				if (!moves(state, 1).empty())
 				{
-					cout << "player 1 move" << endl;
+					//cout << "player 1 move" << endl;
 					makeBestMove(curPlayer, depth1);
+					cout << "player 1 move " << state.posFrom << " " << state.posTo << endl;
 					print();
 				}
 				if (!moves(state, 2).empty())
 				{
-					cout << "player 2 move" << endl;
+					//cout << "player 2 move" << endl;
 					makeBestMove(2, depth2);
+					cout << "player 2 move " << state.posFrom << " " << state.posTo << endl;
 					print();
 				}
 			}

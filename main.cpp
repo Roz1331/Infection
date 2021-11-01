@@ -33,10 +33,10 @@ int main(int argc, char* argv[])
 	initGame(state);
 
 	infection game(state);
-	game.startGame(1, 2);
+	//game.startGame(1, 2);
 
 	//game.botBattle(argv[argc - 1][0] - '0' + 1);
 	//game.botBattle();
-	game.botBattle(2, 4);
+	game.botBattle(5, 5);
 
 }
