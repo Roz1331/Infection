@@ -426,14 +426,12 @@ namespace INFECTION
 			{
 				if (!moves(state, 1).empty())
 				{
-					//cout << "player 1 move" << endl;
 					makeBestMove(curPlayer, depth1);
 					cout << "player 1 move " << state.posFrom << " " << state.posTo << endl;
 					print();
 				}
 				if (!moves(state, 2).empty())
 				{
-					//cout << "player 2 move" << endl;
 					makeBestMove(2, depth2);
 					cout << "player 2 move " << state.posFrom << " " << state.posTo << endl;
 					print();
@@ -451,6 +449,41 @@ namespace INFECTION
 			case 0:
 				cout << "Not bad. Draw!" << endl;
 				break;
+			}
+		}
+
+		void playWithBot(int fm, int cp)
+		{
+			curPlayer = cp;
+			firstMove = fm;
+
+			print();
+
+			if (firstMove != curPlayer)
+			{
+				if (!moves(state, 2).empty())
+				{
+					playerMove();
+					cout << "player 2 move " << state.posFrom << state.posTo << endl;
+					print();
+				}
+			}
+
+			while (!isGameOver())
+			{
+				if (!moves(state, 1).empty())
+				{
+					makeBestMove(1, maxDepth);
+					cout << "player 1 move " << state.posFrom << state.posTo << endl;
+					cerr << state.posFrom << " " << state.posTo << endl;
+					print();
+				}
+				if (!moves(state, 2).empty())
+				{
+					playerMove();
+					cout << "player 2 move " << state.posFrom << " " << state.posTo << endl;
+					print();
+				}
 			}
 		}
 		

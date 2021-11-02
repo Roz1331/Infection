@@ -37,6 +37,20 @@ int main(int argc, char* argv[])
 
 	//game.botBattle(argv[argc - 1][0] - '0' + 1);
 	//game.botBattle();
-	game.botBattle(5, 5);
+	//game.botBattle(5, 5);
 
+	game.playWithBot(argv[argc - 1][0] - '0' + 1, argv[argc - 1][0] - '0' + 1);
+
+	switch (game.winner)
+	{
+	case 1:
+		cout << "Well done! You won!" << endl;
+		return 0;
+	case 2:
+		cout << "Sorry, you lost(((" << endl;
+		return 3;
+	case 0:
+		cout << "Not bad. Draw!" << endl;
+		return 4;
+	}
 }
