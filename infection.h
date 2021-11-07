@@ -14,7 +14,7 @@ namespace INFECTION
 		int winner;
 		int curPlayer;
 		int firstMove;
-		int maxDepth = 4;
+		int maxDepth = 5;
 		string bestFrom;
 		string bestTo;
 
@@ -206,22 +206,23 @@ namespace INFECTION
 						break;
 				}
 			}
-
 			return make_tuple(localBestBoard, localBest);
 		}
 
 		void makeBestMove(int player, int d)
 		{
-			cout << "oldposFrom = " << state.posFrom << " oldposTo " << state.posTo << endl;
-
-			if (player == 1)
+			if (curPlayer == 1)
 				state = get<0>(findBestMoveForFirstPlayer(state, 1, d));
-			else if(player == 2) state = get<0>(findBestMoveForSecondPlayer(state, 2, d));
-			cout << "posFrom = " << state.posFrom << " posTo " << state.posTo << endl;
+			else if(curPlayer == 2) state = get<0>(findBestMoveForSecondPlayer(state, 2, d));
 		}
 		
 		bool isGameOver()
 		{
+			if (curPlayer == 1 && !moves(state, 2).empty())
+			{
+				cout << "===========================\n";
+				return false;
+			}
 			int score1 = 0;
 			int score2 = 0;
 			int emptyCells = 0;
@@ -237,29 +238,45 @@ namespace INFECTION
 					else emptyCells++;
 				}
 			}
-			
+
 			// определяем победителя
 
-			if (score1 == 0 )
+			if (score1 == 0)
 			{
+				cout << "---- winner = 2 ----\n";
 				winner = 2;
 				return true;
 			}
 			else if (score2 == 0)
 			{
+				cout << "---- winner = 1 ----\n";
 				winner = 1;
 				return true;
 			}
-			else if (emptyCells ==0 || (moves(state, 1).size() == 0 && moves(state, 2).size() == 0))
+			else if (emptyCells == 0 || ((moves(state, 1).size() == 0 && moves(state, 2).size() == 0)))
 			{
-				if (state.heur > 0)
+				cout << "-----------------------------------------\n";
+				print();
+				if (state.heuristic(curPlayer) > 0)
+				{
+					cout << "heur == " << state.heur << endl;
+					cout << "----| winner = 1 |----\n";
 					winner = 1;
-				else if (state.heur < 0)
+				}
+				else if (state.heuristic(curPlayer) < 0)
+				{
+					cout << "----| winner = 2 |----\n";
 					winner = 2;
+				}
 				else
-					winner = 0; // draw
+				{
+					cout << "----| winner = 0 |----\n";
+					winner = 0;
+				} // draw
 				return true;
 			}
+		
+			
 			return false;
 		}
 
@@ -544,8 +561,10 @@ namespace INFECTION
 					{
 						getMoveFromAnotherBot();
 					}
-					if (!moves(state, 1).empty())
+					vector<board> vv = moves(state, 1);
+					if (!vv.empty())
 					{
+						if (vv.size() <= 4) maxDepth = vv.size();
 						makeBestMove(1, maxDepth);
 						cerr << state.posFrom << " " << state.posTo << endl;
 						cout << "player 1 move " << state.posFrom << " " << state.posTo << endl;
@@ -558,12 +577,7 @@ namespace INFECTION
 					vector<board> vv = moves(state, 2);
 					if (!vv.empty())
 					{
-						cout << "moves posipilities: " << vv.size() << endl;
-						for (auto x : vv)
-						{
-							cout << "possible state:\n";
-							printBoard(x.state);
-						}
+						if (vv.size() <= 4) maxDepth = vv.size();
 						makeBestMove(2, maxDepth);
 						cerr << state.posFrom << " " << state.posTo << endl;
 						cout << "player 2 move " << state.posFrom << " " << state.posTo << endl;
@@ -571,6 +585,7 @@ namespace INFECTION
 					}
 				}
 				isFirstMove = false;
+
 			}
 		}
 		
