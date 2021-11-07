@@ -39,7 +39,9 @@ int main(int argc, char* argv[])
 	//game.botBattle();
 	//game.botBattle(5, 5);
 
+	//cout << "очередь хода = " << argv[argc - 1][0] - '0' + 1 << endl;
 	game.playWithBot(argv[argc - 1][0] - '0' + 1, argv[argc - 1][0] - '0' + 1);
+	
 
 	switch (game.winner)
 	{
